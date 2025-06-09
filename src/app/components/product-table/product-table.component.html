@@ -1,0 +1,41 @@
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Precio</th>
+        <th>Rating</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.name }}</td>
+        <td>
+          <span class="badge bg-secondary">{{ product.category }}</span>
+        </td>
+        <td>{{ product.price | currency }}</td>
+        <td>
+          <span class="text-warning">
+            <i class="fas fa-star" *ngFor="let _ of getStarsArray(product.rating)"></i>
+            <i class="far fa-star" *ngFor="let _ of getEmptyStarsArray(product.rating)"></i>
+          </span>
+          <small class="text-muted">({{ product.rating }})</small>
+        </td>
+        <td>{{ product.stock || 'N/A' }}</td>
+        <td>
+          <div class="btn-group" role="group">
+            <button class="btn btn-outline-primary btn-sm" (click)="edit.emit(product)">
+              <i class="fas fa-edit me-1"></i>Editar
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="onDelete(product.id!)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

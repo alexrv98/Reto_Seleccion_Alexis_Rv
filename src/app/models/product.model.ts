@@ -7,4 +7,6 @@ export interface Product {
   stock: number;
   createdAt?: any; // Firebase
   updatedAt?: any; // Firebase
+  image?: string;
+
 }

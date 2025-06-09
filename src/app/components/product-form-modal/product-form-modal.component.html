@@ -1,0 +1,18 @@
+<!-- product-form-modal.component.html -->
+<div class="modal fade show d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ title }}</h5>
+        <button type="button" class="btn-close" (click)="close.emit()"></button>
+      </div>
+      <div class="modal-body">
+        <app-product-form 
+          [product]="product"
+          (close)="close.emit()"
+          (saved)="saved.emit()">
+        </app-product-form>
+      </div>
+    </div>
+  </div>
+</div>
