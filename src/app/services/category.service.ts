@@ -7,6 +7,7 @@ export class CategoryService {
   private firestore = inject(Firestore);
   private categoryRef = collection(this.firestore, 'categories');
 
+  // Obtiene todas las categorías
   getAll(): Observable<Category[]> {
     return collectionData(this.categoryRef, { idField: 'id' }) as Observable<Category[]>;
   }

@@ -44,6 +44,7 @@ export class ProductFormComponent implements OnInit {
     this.loadCategories();
   }
 
+  // Inicializa el formulario con los datos del producto si existe
   private initForm(): void {
     if (this.product) {
       this.isEditMode = true;
@@ -51,6 +52,7 @@ export class ProductFormComponent implements OnInit {
     }
   }
 
+  // Carga la lista de categorías desde el servicio
   private loadCategories(): void {
     this.categoryService.getAll().subscribe({
       next: (data) => (this.categories = data),
@@ -58,6 +60,7 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
+  // Envía el formulario para crear o actualizar un producto
   async onSubmit() {
     if (this.form.invalid) return;
 
@@ -77,19 +80,23 @@ export class ProductFormComponent implements OnInit {
     }
   }
 
+  // Asigna una calificación al producto en el formulario
   setRating(value: number) {
     this.form.patchValue({ rating: value });
     this.f['rating'].markAsTouched();
   }
 
+  // Cancela el formulario y emite el evento de cierre
   onCancel() {
     this.close.emit();
   }
 
+  // Devuelve los controles del formulario
   get f() {
     return this.form.controls;
   }
 
+  // Devuelve el control de calificación del formulario
   get ratingCtrl() {
     return this.form.get('rating');
   }

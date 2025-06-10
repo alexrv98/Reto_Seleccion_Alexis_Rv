@@ -16,6 +16,7 @@ export class ProductFiltersComponent {
 
   selectedCategory: string = ''; 
 
+  // Emite la categoría seleccionada cuando cambia
   onCategoryChange(value: string) {
     this.selectedCategory = value;
     this.categorySelected.emit(value);

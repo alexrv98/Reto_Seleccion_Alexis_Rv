@@ -14,6 +14,7 @@ export class ProductFiltersPriceComponent {
 
   @Output() priceRangeSelected = new EventEmitter<{ min: number, max: number }>();
 
+  // Emite el rango de precios seleccionado
   onPriceChange() {
     this.priceRangeSelected.emit({ min: this.min, max: this.max });
   }

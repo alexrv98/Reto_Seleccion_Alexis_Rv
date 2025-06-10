@@ -1,0 +1,11 @@
+<div class="mb-3">
+  <label for="searchInput" class="form-label">Buscar por nombre:</label>
+  <input
+    id="searchInput"
+    type="text"
+    class="form-control"
+    placeholder="Nombre del producto..."
+    [(ngModel)]="searchTerm"
+    (input)="onInputChange()"
+  />
+</div>

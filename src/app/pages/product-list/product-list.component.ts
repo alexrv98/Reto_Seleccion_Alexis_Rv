@@ -10,6 +10,7 @@ import { ProductFormModalComponent } from '../../components/product-form-modal/p
 import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { ProductFiltersPriceComponent } from '../../components/product-filters/product-filters-price/product-filters-price.component';
+import { ProductFiltersSearchComponent } from '../../components/product-filters/product-filters-search/product-filters-search.component';
 
 @Component({
   standalone: true,
@@ -22,7 +23,8 @@ import { ProductFiltersPriceComponent } from '../../components/product-filters/p
     ProductCardsComponent,
     ProductFormComponent,
     ProductFormModalComponent,
-    ProductFiltersPriceComponent
+    ProductFiltersPriceComponent,
+    ProductFiltersSearchComponent
   ],
 
 
@@ -123,5 +125,18 @@ export class ProductListComponent implements OnInit {
            (!range.max || price <= range.max);
   });
   }
-  
+
+  // Método para filtrar productos por búsqueda contra Baas
+  onSearch(term: string) {
+  if (!term) {
+    this.loadProducts();
+  } else {
+    this.productService.searchByName(term).subscribe({
+      next: (data) => (this.filteredProducts = data),
+      error: (err) => console.error('Error en búsqueda por nombre:', err),
+    });
+  }
+  }
+
+
 }
