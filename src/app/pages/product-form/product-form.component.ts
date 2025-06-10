@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Product } from '../../models/product.model';
-import { ProductService } from '../../services/product-service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   standalone: true,

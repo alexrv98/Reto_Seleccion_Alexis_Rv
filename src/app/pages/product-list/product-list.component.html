@@ -7,6 +7,10 @@
     </button>
   </div>
 
+  <!-- Filtros -->
+  <app-product-filters [categories]="categories" (categorySelected)="onCategorySelected($event)">
+  </app-product-filters>
+
   <!-- Botón para cambiar vista -->
   <div class="mb-3">
     <div class="btn-group" role="group">
@@ -29,17 +33,11 @@
 
   <!-- Lista de Productos -->
   <ng-container *ngIf="filteredProducts.length > 0; else emptyState">
-    <app-product-cards 
-      *ngIf="vistaCards" 
-      [products]="filteredProducts"
-      (delete)="deleteProduct($event)"
-      (edit)="onEditProduct($event)">
+    <app-product-cards *ngIf="vistaCards" [products]="filteredProducts" [categories]="categories"
+      (delete)="deleteProduct($event)" (edit)="onEditProduct($event)">
     </app-product-cards>
 
-    <app-product-table 
-      *ngIf="!vistaCards" 
-      [products]="filteredProducts"
-      (delete)="deleteProduct($event)"
+    <app-product-table *ngIf="!vistaCards" [products]="filteredProducts" (delete)="deleteProduct($event)"
       (edit)="onEditProduct($event)">
     </app-product-table>
   </ng-container>
@@ -57,10 +55,7 @@
   </ng-template>
 
   <!-- Modal de Formulario -->
-   <app-product-form-modal
-    *ngIf="showFormModal"
-    [product]="selectedProduct"
-    (close)="onFormClosed()"
+  <app-product-form-modal *ngIf="showFormModal" [product]="selectedProduct" (close)="onFormClosed()"
     (saved)="onFormSaved()">
   </app-product-form-modal>
 </div>

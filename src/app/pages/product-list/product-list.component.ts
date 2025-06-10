@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../models/product.model';
 import { RouterModule } from '@angular/router';
+import { ProductFiltersComponent } from '../../components/product-filters/product-filters-category/product-filters.component';
 import { ProductCardsComponent } from '../../components/product-cards/product-cards.component';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
-import { ProductFormModalComponent } from '../../components/product-form-modal/product-form-modal.component';
-import { ProductService } from '../../services/product-service';
 import { ProductFormComponent } from '../product-form/product-form.component';
+import { ProductFormModalComponent } from '../../components/product-form-modal/product-form-modal.component';
+import { ProductService } from '../../services/product.service';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   standalone: true,
@@ -14,11 +16,11 @@ import { ProductFormComponent } from '../product-form/product-form.component';
   imports: [
     CommonModule,
     RouterModule,
+    ProductFiltersComponent,
     ProductTableComponent,
     ProductCardsComponent,
     ProductFormComponent,
     ProductFormModalComponent
-
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
@@ -26,28 +28,37 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
-  categories: string[] = [];
+  categories: Category[] = [];
   vistaCards = true;
   selectedProduct: Product | null = null;
   showFormModal = false;
 
-
-  constructor(private productService: ProductService) { }
+  constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService
+  ) {}
 
   ngOnInit() {
     this.loadProducts();
+    this.loadCategories();
   }
 
   loadProducts() {
     this.productService.getAll().subscribe({
-      next: (data) => {
-        this.products = data;
-        this.filteredProducts = data;
-        this.categories = [...new Set(data.map(p => p.category))];
-      },
-      error: (error) => {
-        console.error('Error al cargar productos:', error);
-      }
+      next: data => this.setProducts(data),
+      error: error => this.handleError('productos', error)
+    });
+  }
+
+  private setProducts(data: Product[]) {
+    this.products = data;
+    this.filteredProducts = data;
+  }
+
+  loadCategories() {
+    this.categoryService.getAll().subscribe({
+      next: data => (this.categories = data),
+      error: err => this.handleError('categorías', err)
     });
   }
 
@@ -58,17 +69,14 @@ export class ProductListComponent implements OnInit {
   }
 
   async deleteProduct(id: string) {
-    if (confirm('¿Estás seguro de eliminar este producto?')) {
-      try {
-        await this.productService.delete(id);
-        this.loadProducts();
-      } catch (error) {
-        console.error('Error al eliminar producto:', error);
-        alert('Error al eliminar el producto');
-      }
+    if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+    try {
+      await this.productService.delete(id);
+      this.loadProducts();
+    } catch (error) {
+      this.handleError('eliminar producto', error, true);
     }
   }
-
 
   onAddProduct() {
     this.selectedProduct = null;
@@ -89,5 +97,8 @@ export class ProductListComponent implements OnInit {
     this.loadProducts();
   }
 
-
+  private handleError(context: string, error: any, alertUser: boolean = false) {
+    console.error(`Error al ${context}:`, error);
+    if (alertUser) alert(`Error al ${context}`);
+  }
 }
