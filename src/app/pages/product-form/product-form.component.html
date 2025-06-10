@@ -1,45 +1,121 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <!-- Nombre -->
   <div class="form-group">
     <label for="name">Nombre:</label>
-    <input id="name" type="text" formControlName="name" class="form-control"
-      [class.is-invalid]="f['name'].invalid && f['name'].touched">
+    <input
+      id="name"
+      type="text"
+      formControlName="name"
+      class="form-control"
+      [class.is-invalid]="f['name'].invalid && f['name'].touched"
+    />
     <div *ngIf="f['name'].invalid && f['name'].touched" class="invalid-feedback">
       El nombre es requerido
     </div>
   </div>
 
+  <!-- Categoría -->
   <div class="form-group">
     <label for="category">Categoría:</label>
-    <input id="category" type="text" formControlName="category" class="form-control"
-      [class.is-invalid]="f['category'].invalid && f['category'].touched">
+    <select
+      id="category"
+      formControlName="category"
+      class="form-control"
+      [class.is-invalid]="f['category'].invalid && f['category'].touched"
+    >
+      <option value="">Seleccione una categoría</option>
+      <option *ngFor="let cat of categories" [value]="cat.id">
+        {{ cat.name }}
+      </option>
+    </select>
+    <div *ngIf="f['category'].invalid && f['category'].touched" class="invalid-feedback">
+      La categoría es requerida
+    </div>
   </div>
 
+  <!-- Precio -->
   <div class="form-group">
     <label for="price">Precio:</label>
-    <input id="price" type="number" formControlName="price" class="form-control"
-      [class.is-invalid]="f['price'].invalid && f['price'].touched">
+    <input
+      id="price"
+      type="number"
+      formControlName="price"
+      class="form-control"
+      [class.is-invalid]="f['price'].invalid && f['price'].touched"
+      min="0"
+      step="any"
+    />
+    <div *ngIf="f['price'].invalid && f['price'].touched" class="invalid-feedback">
+      El precio debe ser mayor o igual a 0
+    </div>
   </div>
 
+  <!-- Rating -->
   <div class="form-group">
-    <label for="rating">Rating:</label>
-    <input id="rating" type="number" min="1" max="5" formControlName="rating" class="form-control">
+    <label for="rating">Calificación:</label>
+    <div class="rating d-flex align-items-center">
+      <ng-container *ngFor="let star of starsArray; let i = index">
+        <i
+          class="fa-star"
+          [ngClass]="{
+            'fas text-warning': i < (ratingCtrl?.value || 0),
+            'far text-muted': i >= (ratingCtrl?.value || 0)
+          }"
+          (click)="setRating(i + 1)"
+        ></i>
+      </ng-container>
+      <small class="text-muted ms-2">({{ ratingCtrl?.value || 0 }})</small>
+    </div>
+    <div *ngIf="f['rating'].invalid && f['rating'].touched" class="invalid-feedback d-block">
+       La calificacion debe estar entre 1 y 5
+    </div>
   </div>
-
+  <!-- Stock -->
   <div class="form-group">
-    <label for="stock">Stock:</label>
-    <input id="stock" type="number" min="0" formControlName="stock" class="form-control">
+    <label for="stock">Cantidad en inventario:</label>
+    <input
+      id="stock"
+      type="number"
+      formControlName="stock"
+      class="form-control"
+      [class.is-invalid]="f['stock'].invalid && f['stock'].touched"
+      min="0"
+    />
+    <div *ngIf="f['stock'].invalid && f['stock'].touched" class="invalid-feedback">
+      La cantidad debe ser mayor o igual a 0
+    </div>
   </div>
 
+  <!-- Imagen -->
   <div class="form-group">
     <label for="image">URL de la Imagen:</label>
-    <input id="image" type="url" formControlName="image" class="form-control" placeholder="https://...">
+    <input
+      id="image"
+      type="url"
+      formControlName="image"
+      class="form-control"
+      placeholder="https://..."
+      [class.is-invalid]="f['image'].invalid && f['image'].touched"
+    />
+    <div *ngIf="f['image'].invalid && f['image'].touched" class="invalid-feedback">
+      Debe ser una URL válida que comience con https://
+    </div>
   </div>
 
+  <!-- Botones -->
   <div class="form-buttons mt-3">
-    <button type="submit" [disabled]="form.invalid" class="btn btn-primary">
+    <button
+      type="submit"
+      [disabled]="form.invalid"
+      class="btn btn-primary"
+    >
       {{ isEditMode ? 'Actualizar' : 'Crear' }}
     </button>
-    <button type="button" (click)="onCancel()" class="btn btn-secondary ms-2">
+    <button
+      type="button"
+      (click)="onCancel()"
+      class="btn btn-secondary ms-2"
+    >
       Cancelar
     </button>
   </div>
