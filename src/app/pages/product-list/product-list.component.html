@@ -37,7 +37,7 @@
       (delete)="deleteProduct($event)" (edit)="onEditProduct($event)">
     </app-product-cards>
 
-    <app-product-table *ngIf="!vistaCards" [products]="filteredProducts" (delete)="deleteProduct($event)"
+    <app-product-table *ngIf="!vistaCards" [products]="filteredProducts" [categories]="categories" (delete)="deleteProduct($event)"
       (edit)="onEditProduct($event)">
     </app-product-table>
   </ng-container>
