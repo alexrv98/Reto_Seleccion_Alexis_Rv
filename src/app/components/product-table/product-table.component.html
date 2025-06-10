@@ -14,7 +14,7 @@
       <tr *ngFor="let product of products">
         <td>{{ product.name }}</td>
         <td>
-          <span class="badge bg-secondary">{{ product.category }}</span>
+          <span class="badge bg-secondary">{{ getCategoryName(product.category) }}</span>
         </td>
         <td>{{ product.price | currency }}</td>
         <td>

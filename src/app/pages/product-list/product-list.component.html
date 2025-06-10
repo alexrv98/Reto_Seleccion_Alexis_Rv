@@ -11,6 +11,9 @@
   <app-product-filters [categories]="categories" (categorySelected)="onCategorySelected($event)">
   </app-product-filters>
 
+  <app-product-filters-price (priceRangeSelected)="onPriceRangeSelected($event)"></app-product-filters-price>
+
+
   <!-- Botón para cambiar vista -->
   <div class="mb-3">
     <div class="btn-group" role="group">

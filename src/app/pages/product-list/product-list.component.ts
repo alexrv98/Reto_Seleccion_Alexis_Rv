@@ -7,8 +7,9 @@ import { ProductCardsComponent } from '../../components/product-cards/product-ca
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
 import { ProductFormComponent } from '../product-form/product-form.component';
 import { ProductFormModalComponent } from '../../components/product-form-modal/product-form-modal.component';
-import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../services/category.service';
+import { ProductService } from '../../services/product.service';
+import { ProductFiltersPriceComponent } from '../../components/product-filters/product-filters-price/product-filters-price.component';
 
 @Component({
   standalone: true,
@@ -20,8 +21,12 @@ import { CategoryService } from '../../services/category.service';
     ProductTableComponent,
     ProductCardsComponent,
     ProductFormComponent,
-    ProductFormModalComponent
+    ProductFormModalComponent,
+    ProductFiltersPriceComponent
   ],
+
+
+
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
@@ -42,7 +47,8 @@ export class ProductListComponent implements OnInit {
     this.loadProducts();
     this.loadCategories();
   }
-
+  
+  //Carga de productos
   loadProducts() {
     this.productService.getAll().subscribe({
       next: data => this.setProducts(data),
@@ -54,20 +60,24 @@ export class ProductListComponent implements OnInit {
     this.products = data;
     this.filteredProducts = data;
   }
-
+  
+  //Carga de categorías
   loadCategories() {
     this.categoryService.getAll().subscribe({
       next: data => (this.categories = data),
       error: err => this.handleError('categorías', err)
     });
   }
-
+  
+  //Selección de categoría
   onCategorySelected(category: string) {
     this.filteredProducts = category
       ? this.products.filter(p => p.category === category)
       : this.products;
   }
 
+
+  //Eliminación de producto
   async deleteProduct(id: string) {
     if (!confirm('¿Estás seguro de eliminar este producto?')) return;
     try {
@@ -78,27 +88,40 @@ export class ProductListComponent implements OnInit {
     }
   }
 
+  //Agregar y editar producto
   onAddProduct() {
     this.selectedProduct = null;
     this.showFormModal = true;
   }
-
   onEditProduct(product: Product) {
     this.selectedProduct = product;
     this.showFormModal = true;
   }
 
+  //Cerrar formulario
   onFormClosed() {
     this.showFormModal = false;
   }
 
+  //Guardar
   onFormSaved() {
     this.showFormModal = false;
     this.loadProducts();
   }
 
+  // Manejo de errores
   private handleError(context: string, error: any, alertUser: boolean = false) {
     console.error(`Error al ${context}:`, error);
     if (alertUser) alert(`Error al ${context}`);
   }
+  
+  // Método para filtrar productos por rango de precios
+  onPriceRangeSelected(range: { min: number, max: number }) {
+  this.filteredProducts = this.products.filter(p => {
+    const price = p.price ?? 0;
+    return (!range.min || price >= range.min) &&
+           (!range.max || price <= range.max);
+  });
+  }
+  
 }
