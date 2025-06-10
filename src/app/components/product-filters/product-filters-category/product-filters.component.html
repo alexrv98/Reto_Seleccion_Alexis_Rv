@@ -1,0 +1,11 @@
+<select
+  id="categoryFilter"
+  class="form-select"
+  [(ngModel)]="selectedCategory"
+  (change)="onCategoryChange(selectedCategory)"
+>
+  <option value="">-- Todas --</option>
+  <option *ngFor="let category of categories" [value]="category.id">
+    {{ category.name }}
+  </option>
+</select>
