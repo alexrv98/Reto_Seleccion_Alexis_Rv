@@ -1,11 +1,12 @@
-<div class="mb-3">
-  <label for="searchInput" class="form-label">Buscar por nombre:</label>
+<div class="position-relative">
   <input
     id="searchInput"
     type="text"
-    class="form-control"
-    placeholder="Nombre del producto..."
+    class="form-control rounded-pill pe-5"
+    placeholder="Buscar productos"
     [(ngModel)]="searchTerm"
     (input)="onInputChange()"
   />
+  <i class="fas fa-search text-muted position-absolute"
+     style="top: 50%; right: 15px; transform: translateY(-50%); pointer-events: none;"></i>
 </div>

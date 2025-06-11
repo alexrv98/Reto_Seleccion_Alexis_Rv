@@ -1,39 +1,95 @@
 <div class="container mt-4">
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Listado de Productos</h2>
+    <h2 class="mb-0 fw-bold">
+      <i class="fas fa-box-open me-2 text-primary"></i>
+      Productos
+    </h2>
     <button class="btn btn-primary" (click)="onAddProduct()">
       <i class="fas fa-plus me-2"></i>Agregar Producto
     </button>
   </div>
 
   <!-- Filtros -->
-  <app-product-filters [categories]="categories" (categorySelected)="onCategorySelected($event)">
-  </app-product-filters>
-
-  <app-product-filters-price (priceRangeSelected)="onPriceRangeSelected($event)"></app-product-filters-price>
-<app-product-filters-search (search)="onSearch($event)"></app-product-filters-search>
-
-
-  <!-- Botón para cambiar vista -->
   <div class="mb-3">
-    <div class="btn-group" role="group">
-      <button 
-        type="button" 
-        class="btn btn-outline-secondary" 
-        [class.active]="vistaCards"
-        (click)="vistaCards = true">
-        <i class="fas fa-th-large me-1"></i>Cards
-      </button>
-      <button 
-        type="button" 
-        class="btn btn-outline-secondary" 
-        [class.active]="!vistaCards"
-        (click)="vistaCards = false">
-        <i class="fas fa-list me-1"></i>Tabla
-      </button>
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body py-2 px-3">
+          <!-- Barra principal de búsqueda y filtros -->
+          <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+            <!-- Búsqueda principal -->
+            <div class="flex-grow-1 d-flex align-items-center" style="min-width: 220px;">
+              <app-product-filters-search class="w-100" (search)="onSearch($event)">
+              </app-product-filters-search>
+            </div>
+
+            <!-- Botón de filtros -->
+            <button class="btn btn-outline-primary btn-sm rounded-pill px-3 d-flex align-items-center"
+              (click)="showFilters = !showFilters" [class.active]="showFilters">
+              <i class="fas fa-filter me-1 small"></i>
+              <span class="d-none d-sm-inline">Filtros</span>
+              <i class="fas ms-1" [class.fa-chevron-down]="!showFilters" [class.fa-chevron-up]="showFilters"></i>
+            </button>
+
+            <!-- Contador de productos -->
+            <div class="badge bg-secondary text-white rounded-pill px-3 py-2 small d-flex align-items-center">
+              <i class="fas fa-cubes me-1"></i>
+              {{ filteredProducts.length }} productos
+            </div>
+          </div>
+
+          <!-- Panel de filtros colapsable -->
+          <div class="collapse" [class.show]="showFilters" id="filtersCollapse">
+            <div class="row g-2 p-3 bg-light rounded-3 mt-2">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold text-muted small mb-1">
+                  <i class="fas fa-tags me-1"></i>CATEGORÍA
+                </label>
+                <app-product-filters [categories]="categories" (categorySelected)="onCategorySelected($event)">
+                </app-product-filters>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold text-muted small mb-1">
+                  <i class="fas fa-dollar-sign me-1"></i>RANGO DE PRECIO
+                </label>
+                <app-product-filters-price (priceRangeSelected)="onPriceRangeSelected($event)">
+                </app-product-filters-price>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Controles de vista y acciones -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <!-- Selector de vista -->
+        <div class="btn-group shadow-sm" role="group">
+          <input type="radio" class="btn-check" name="vista" id="vista-cards" [checked]="vistaCards"
+            (change)="vistaCards = true">
+          <label class="btn btn-outline-primary" for="vista-cards">
+            <i class="fas fa-th-large me-2"></i>Cards
+          </label>
+
+          <input type="radio" class="btn-check" name="vista" id="vista-tabla" [checked]="!vistaCards"
+            (change)="vistaCards = false">
+          <label class="btn btn-outline-primary" for="vista-tabla">
+            <i class="fas fa-list me-2"></i>Tabla
+          </label>
+        </div>
+
+        <!-- Acciones adicionales -->
+        <button class="btn btn-info" title="Ver estadísticas">
+          <i class="fas fa-chart-line me-1"></i>Estadísticas
+        </button>
+
+      </div>
+    </div>
+  </div>
+
 
   <!-- Lista de Productos -->
   <ng-container *ngIf="filteredProducts.length > 0; else emptyState">

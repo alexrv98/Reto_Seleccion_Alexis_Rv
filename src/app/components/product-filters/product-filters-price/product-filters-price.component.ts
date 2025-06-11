@@ -9,13 +9,16 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './product-filters-price.component.html',
 })
 export class ProductFiltersPriceComponent {
-  min = 0;
-  max = 0;
+  min: number | null = null;
+  max: number | null = null;
 
   @Output() priceRangeSelected = new EventEmitter<{ min: number, max: number }>();
 
-  // Emite el rango de precios seleccionado
   onPriceChange() {
-    this.priceRangeSelected.emit({ min: this.min, max: this.max });
+    this.priceRangeSelected.emit({
+      min: this.min ?? 0,
+      max: this.max ?? 0
+    });
   }
 }
+

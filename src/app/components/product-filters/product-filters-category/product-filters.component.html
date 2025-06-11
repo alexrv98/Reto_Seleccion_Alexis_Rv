@@ -1,10 +1,10 @@
 <select
   id="categoryFilter"
-  class="form-select"
+  class="form-select rounded-pill"
   [(ngModel)]="selectedCategory"
   (change)="onCategoryChange(selectedCategory)"
 >
-  <option value="">-- Todas --</option>
+  <option value="">Mostrar todas</option>
   <option *ngFor="let category of categories" [value]="category.id">
     {{ category.name }}
   </option>

@@ -1,10 +1,22 @@
 <div class="row mb-3">
   <div class="col">
-    <label>Mínimo</label>
-    <input type="number" [(ngModel)]="min" class="form-control" (change)="onPriceChange()" />
+    <input
+      id="minPrice"
+      type="number"
+      [(ngModel)]="min"
+      class="form-control rounded-pill"
+      (change)="onPriceChange()"
+      placeholder="Mínimo"
+    />
   </div>
   <div class="col">
-    <label>Máximo</label>
-    <input type="number" [(ngModel)]="max" class="form-control" (change)="onPriceChange()" />
+    <input
+      id="maxPrice"
+      type="number"
+      [(ngModel)]="max"
+      class="form-control rounded-pill"
+      (change)="onPriceChange()"
+      placeholder="Máximo"
+    />
   </div>
 </div>

@@ -39,6 +39,8 @@ export class ProductListComponent implements OnInit {
   vistaCards = true;
   selectedProduct: Product | null = null;
   showFormModal = false;
+  showFilters = false;
+
 
   constructor(
     private productService: ProductService,

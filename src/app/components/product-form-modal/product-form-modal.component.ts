@@ -17,3 +17,5 @@ export class ProductFormModalComponent {
     return this.product ? 'Editar Producto' : 'Nuevo Producto';
   }
 }
+
+
