@@ -6,6 +6,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from './environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
+
 
 bootstrapApplication(App, {
   providers: [

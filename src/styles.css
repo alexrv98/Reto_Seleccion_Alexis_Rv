@@ -1,5 +1,4 @@
 
-
 .modal {
   --bs-modal-zindex: 1055;
   --bs-modal-width: 500px;
@@ -420,4 +419,9 @@ div.dt-container div.dt-search {
 .breadcrumb-item.active {
   color: var(--bs-breadcrumb-item-active-color);
 }
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
 

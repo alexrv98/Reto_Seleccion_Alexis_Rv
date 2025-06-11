@@ -1,37 +1,69 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatBadgeModule } from '@angular/material/badge';
 import { Product } from '../../models/product.model';
 
 @Component({
   standalone: true,
   selector: 'app-product-table',
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatBadgeModule
+  ],
   templateUrl: './product-table.component.html',
 })
-export class ProductTableComponent {
+export class ProductTableComponent implements AfterViewInit {
   @Input() products: Product[] = [];
   @Input() categories: Category[] = [];
 
   @Output() delete = new EventEmitter<string>();
   @Output() edit = new EventEmitter<Product>();
 
-  // Devuelve un array para mostrar estrellas llenas según el rating
-  getStarsArray(rating: number): number[] {
-    return Array(Math.floor(rating)).fill(0);
+  displayedColumns: string[] = ['name', 'category', 'price', 'rating', 'stock', 'actions'];
+  dataSource = new MatTableDataSource<Product>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
-  // Devuelve un array para mostrar estrellas vacías según el rating
-  getEmptyStarsArray(rating: number): number[] {
-    return Array(5 - Math.floor(rating)).fill(0);
+  ngOnChanges(): void {
+    this.dataSource.data = this.products;
   }
 
-  // Devuelve el nombre de la categoría según su id
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
+
   getCategoryName(id: string): string {
     return this.categories.find(c => c.id === id)?.name || 'Sin categoría';
   }
 
-  // Emite el evento para eliminar un producto
+  getStarsArray(rating: number): number[] {
+    return Array(Math.floor(rating)).fill(0);
+  }
+
+  getEmptyStarsArray(rating: number): number[] {
+    return Array(5 - Math.floor(rating)).fill(0);
+  }
+
   onDelete(id: string) {
     this.delete.emit(id);
   }
