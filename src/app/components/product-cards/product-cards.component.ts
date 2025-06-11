@@ -35,4 +35,7 @@ export class ProductCardsComponent {
   onDelete(id: string) {
     this.delete.emit(id);
   }
+
+
+  
 }

@@ -11,6 +11,7 @@ import { CategoryService } from '../../services/category.service';
 import { ProductService } from '../../services/product.service';
 import { ProductFiltersPriceComponent } from '../../components/product-filters/product-filters-price/product-filters-price.component';
 import { ProductFiltersSearchComponent } from '../../components/product-filters/product-filters-search/product-filters-search.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -18,6 +19,7 @@ import { ProductFiltersSearchComponent } from '../../components/product-filters/
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     ProductFiltersComponent,
     ProductTableComponent,
     ProductCardsComponent,
@@ -40,6 +42,11 @@ export class ProductListComponent implements OnInit {
   selectedProduct: Product | null = null;
   showFormModal = false;
   showFilters = false;
+  sortField: 'name' | 'price' = 'name';
+sortDirection: 'asc' | 'desc' = 'asc';
+
+currentPage = 1;
+itemsPerPage = 6;
 
 
   constructor(
@@ -139,6 +146,53 @@ export class ProductListComponent implements OnInit {
     });
   }
   }
+
+
+  get paginatedAndSortedProducts(): Product[] {
+  const sorted = [...this.filteredProducts].sort((a, b) => {
+    const fieldA = a[this.sortField];
+    const fieldB = b[this.sortField];
+
+    if (typeof fieldA === 'string' && typeof fieldB === 'string') {
+      return this.sortDirection === 'asc'
+        ? fieldA.localeCompare(fieldB)
+        : fieldB.localeCompare(fieldA);
+    } else if (typeof fieldA === 'number' && typeof fieldB === 'number') {
+      return this.sortDirection === 'asc' ? fieldA - fieldB : fieldB - fieldA;
+    }
+
+    return 0;
+  });
+
+  const start = (this.currentPage - 1) * this.itemsPerPage;
+  return sorted.slice(start, start + this.itemsPerPage);
+}
+
+get totalPages(): number {
+  return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
+}
+
+get pageNumbers(): number[] {
+  const pagesToShow = 4; // puedes ajustar este valor
+  const total = this.totalPages;
+
+  let start = Math.max(this.currentPage - Math.floor(pagesToShow / 2), 1);
+  let end = start + pagesToShow - 1;
+
+  if (end > total) {
+    end = total;
+    start = Math.max(end - pagesToShow + 1, 1);
+  }
+
+  const numbers = [];
+  for (let i = start; i <= end; i++) {
+    numbers.push(i);
+  }
+
+  return numbers;
+}
+
+
 
 
 }
