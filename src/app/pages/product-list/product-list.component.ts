@@ -43,22 +43,25 @@ export class ProductListComponent implements OnInit {
   showFormModal = false;
   showFilters = false;
   sortField: 'name' | 'price' = 'name';
-sortDirection: 'asc' | 'desc' = 'asc';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  currentPage = 1;
+  itemsPerPage = 8;
+  selectedCategory: string | null = null;
+  priceRange: { min: number, max: number } | null = null;
+  searchTerm: string = '';
 
-currentPage = 1;
-itemsPerPage = 6;
 
 
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadProducts();
     this.loadCategories();
   }
-  
+
   //Carga de productos
   loadProducts() {
     this.productService.getAll().subscribe({
@@ -71,7 +74,7 @@ itemsPerPage = 6;
     this.products = data;
     this.filteredProducts = data;
   }
-  
+
   //Carga de categorías
   loadCategories() {
     this.categoryService.getAll().subscribe({
@@ -79,13 +82,13 @@ itemsPerPage = 6;
       error: err => this.handleError('categorías', err)
     });
   }
-  
+
   //Selección de categoría
   onCategorySelected(category: string) {
-    this.filteredProducts = category
-      ? this.products.filter(p => p.category === category)
-      : this.products;
-  }
+  this.selectedCategory = category;
+  this.applyAllFilters();
+}
+
 
 
   //Eliminación de producto
@@ -116,81 +119,132 @@ itemsPerPage = 6;
 
   //Guardar
   onFormSaved() {
-    this.showFormModal = false;
-    this.loadProducts();
-  }
+  this.showFormModal = false;
+  this.productService.getAll().subscribe({
+    next: (data) => {
+      this.products = data;
+      this.applyAllFilters(); // <--- esta es la clave
+    },
+    error: (error) => this.handleError('productos', error)
+  });
+}
+
 
   // Manejo de errores
   private handleError(context: string, error: any, alertUser: boolean = false) {
     console.error(`Error al ${context}:`, error);
     if (alertUser) alert(`Error al ${context}`);
   }
-  
+
   // Método para filtrar productos por rango de precios
   onPriceRangeSelected(range: { min: number, max: number }) {
-  this.filteredProducts = this.products.filter(p => {
-    const price = p.price ?? 0;
-    return (!range.min || price >= range.min) &&
-           (!range.max || price <= range.max);
-  });
-  }
+  this.priceRange = range;
+  this.applyAllFilters();
+}
+
 
   // Método para filtrar productos por búsqueda contra Baas
   onSearch(term: string) {
-  if (!term) {
-    this.loadProducts();
-  } else {
-    this.productService.searchByName(term).subscribe({
-      next: (data) => (this.filteredProducts = data),
-      error: (err) => console.error('Error en búsqueda por nombre:', err),
+  this.searchTerm = term;
+  this.applyAllFilters();
+}
+
+applyAllFilters() {
+  if (this.searchTerm) {
+    // Búsqueda contra el backend
+    this.productService.searchByName(this.searchTerm).subscribe({
+      next: (data) => {
+        let filtered = [...data];
+
+        // Filtro por categoría
+        if (this.selectedCategory) {
+          filtered = filtered.filter(p => p.category === this.selectedCategory);
+        }
+
+        // Filtro por precio
+        if (this.priceRange) {
+          const { min, max } = this.priceRange;
+          filtered = filtered.filter(p => {
+            const price = p.price ?? 0;
+            return (!min || price >= min) && (!max || price <= max);
+          });
+        }
+
+        this.filteredProducts = filtered;
+        this.currentPage = 1;
+      },
+      error: (err) => {
+        console.error('Error en búsqueda por nombre:', err);
+        this.filteredProducts = [];
+      }
     });
+  } else {
+    // Búsqueda local si no hay término
+    let filtered = [...this.products];
+
+    if (this.selectedCategory) {
+      filtered = filtered.filter(p => p.category === this.selectedCategory);
+    }
+
+    if (this.priceRange) {
+      const { min, max } = this.priceRange;
+      filtered = filtered.filter(p => {
+        const price = p.price ?? 0;
+        return (!min || price >= min) && (!max || price <= max);
+      });
+    }
+
+    this.filteredProducts = filtered;
+    this.currentPage = 1;
   }
-  }
+}
+
+
 
 
   get paginatedAndSortedProducts(): Product[] {
-  const sorted = [...this.filteredProducts].sort((a, b) => {
-    const fieldA = a[this.sortField];
-    const fieldB = b[this.sortField];
+    const sorted = [...this.filteredProducts].sort((a, b) => {
+      const fieldA = a[this.sortField];
+      const fieldB = b[this.sortField];
 
-    if (typeof fieldA === 'string' && typeof fieldB === 'string') {
-      return this.sortDirection === 'asc'
-        ? fieldA.localeCompare(fieldB)
-        : fieldB.localeCompare(fieldA);
-    } else if (typeof fieldA === 'number' && typeof fieldB === 'number') {
-      return this.sortDirection === 'asc' ? fieldA - fieldB : fieldB - fieldA;
+      if (typeof fieldA === 'string' && typeof fieldB === 'string') {
+        return this.sortDirection === 'asc'
+          ? fieldA.localeCompare(fieldB)
+          : fieldB.localeCompare(fieldA);
+      } else if (typeof fieldA === 'number' && typeof fieldB === 'number') {
+        return this.sortDirection === 'asc' ? fieldA - fieldB : fieldB - fieldA;
+      }
+
+      return 0;
+    });
+
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return sorted.slice(start, start + this.itemsPerPage);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
+  }
+
+  get pageNumbers(): number[] {
+    const pagesToShow = 4; // puedes ajustar este valor
+    const total = this.totalPages;
+
+    let start = Math.max(this.currentPage - Math.floor(pagesToShow / 2), 1);
+    let end = start + pagesToShow - 1;
+
+    if (end > total) {
+      end = total;
+      start = Math.max(end - pagesToShow + 1, 1);
     }
 
-    return 0;
-  });
+    const numbers = [];
+    for (let i = start; i <= end; i++) {
+      numbers.push(i);
+    }
 
-  const start = (this.currentPage - 1) * this.itemsPerPage;
-  return sorted.slice(start, start + this.itemsPerPage);
-}
-
-get totalPages(): number {
-  return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
-}
-
-get pageNumbers(): number[] {
-  const pagesToShow = 4; // puedes ajustar este valor
-  const total = this.totalPages;
-
-  let start = Math.max(this.currentPage - Math.floor(pagesToShow / 2), 1);
-  let end = start + pagesToShow - 1;
-
-  if (end > total) {
-    end = total;
-    start = Math.max(end - pagesToShow + 1, 1);
+    return numbers;
   }
-
-  const numbers = [];
-  for (let i = start; i <= end; i++) {
-    numbers.push(i);
-  }
-
-  return numbers;
-}
 
 
 
