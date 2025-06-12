@@ -7,6 +7,7 @@ import { Product } from '../../models/product.model';
 import { ProductFiltersComponent } from '../../components/product-filters/product-filters-category/product-filters.component';
 import { ProductFiltersPriceComponent } from '../../components/product-filters/product-filters-price/product-filters-price.component';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-product-statistics',
@@ -15,7 +16,8 @@ import { CommonModule } from '@angular/common';
     BaseChartDirective,
     ProductFiltersComponent,
     ProductFiltersPriceComponent,
-    CommonModule],
+    CommonModule,
+    NavbarComponent],
 
   templateUrl: './product-statistics.component.html',
 })

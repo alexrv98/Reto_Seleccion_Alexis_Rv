@@ -12,6 +12,7 @@ import { ProductService } from '../../services/product.service';
 import { ProductFiltersPriceComponent } from '../../components/product-filters/product-filters-price/product-filters-price.component';
 import { ProductFiltersSearchComponent } from '../../components/product-filters/product-filters-search/product-filters-search.component';
 import { FormsModule } from '@angular/forms';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   standalone: true,
@@ -26,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     ProductFormComponent,
     ProductFormModalComponent,
     ProductFiltersPriceComponent,
-    ProductFiltersSearchComponent
+    ProductFiltersSearchComponent,
+    NavbarComponent
   ],
 
 
