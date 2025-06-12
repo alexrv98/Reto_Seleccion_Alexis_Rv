@@ -54,7 +54,7 @@ export class ProductStatisticsComponent implements OnInit {
     private categoryService: CategoryService
   ) { }
 
-  
+
   ngOnInit() {
     this.categoryService.getAll().subscribe(cats => {
       this.categories = cats;
@@ -66,133 +66,133 @@ export class ProductStatisticsComponent implements OnInit {
       });
     });
   }
-  
+
 
   // Paleta de colores moderna para el gráfico
-private chartColors = [
-  'rgba(255, 107, 107, 0.8)',   // Rojo coral
-  'rgba(254, 202, 87, 0.8)',    // Amarillo dorado
-  'rgba(72, 219, 251, 0.8)',    // Azul cielo
-  'rgba(255, 159, 243, 0.8)',   // Rosa vibrante
-  'rgba(129, 236, 236, 0.8)',   // Cian claro
-  'rgba(255, 195, 113, 0.8)',   // Naranja suave
-  'rgba(165, 105, 255, 0.8)',   // Púrpura
-  'rgba(95, 241, 175, 0.8)',    // Verde menta
-  'rgba(255, 142, 142, 0.8)',   // Rosa salmón
-  'rgba(115, 195, 255, 0.8)'    // Azul claro
-];
+  private chartColors = [
+    'rgba(255, 107, 107, 0.8)',   // Rojo coral
+    'rgba(254, 202, 87, 0.8)',    // Amarillo dorado
+    'rgba(72, 219, 251, 0.8)',    // Azul cielo
+    'rgba(255, 159, 243, 0.8)',   // Rosa vibrante
+    'rgba(129, 236, 236, 0.8)',   // Cian claro
+    'rgba(255, 195, 113, 0.8)',   // Naranja suave
+    'rgba(165, 105, 255, 0.8)',   // Púrpura
+    'rgba(95, 241, 175, 0.8)',    // Verde menta
+    'rgba(255, 142, 142, 0.8)',   // Rosa salmón
+    'rgba(115, 195, 255, 0.8)'    // Azul claro
+  ];
 
-private chartBorderColors = [
-  'rgba(255, 107, 107, 1)',
-  'rgba(254, 202, 87, 1)',
-  'rgba(72, 219, 251, 1)',
-  'rgba(255, 159, 243, 1)',
-  'rgba(129, 236, 236, 1)',
-  'rgba(255, 195, 113, 1)',
-  'rgba(165, 105, 255, 1)',
-  'rgba(95, 241, 175, 1)',
-  'rgba(255, 142, 142, 1)',
-  'rgba(115, 195, 255, 1)'
-];
+  private chartBorderColors = [
+    'rgba(255, 107, 107, 1)',
+    'rgba(254, 202, 87, 1)',
+    'rgba(72, 219, 251, 1)',
+    'rgba(255, 159, 243, 1)',
+    'rgba(129, 236, 236, 1)',
+    'rgba(255, 195, 113, 1)',
+    'rgba(165, 105, 255, 1)',
+    'rgba(95, 241, 175, 1)',
+    'rgba(255, 142, 142, 1)',
+    'rgba(115, 195, 255, 1)'
+  ];
 
-// Opciones mejoradas del chart
-chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false // Ocultamos la leyenda por defecto
-    },
-    tooltip: {
-      backgroundColor: 'rgba(0, 0, 0, 0.8)',
-      titleColor: 'white',
-      bodyColor: 'white',
-      borderColor: 'rgba(255, 255, 255, 0.3)',
-      borderWidth: 1,
-      cornerRadius: 12,
-      padding: 12,
-      titleFont: {
-        size: 14,
-        weight: 'bold'
+  // Opciones mejoradas del chart
+  chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false // Ocultamos la leyenda por defecto
       },
-      bodyFont: {
-        size: 13
-      },
-      callbacks: {
-        label: (context: any) => {
-          const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
-          const percentage = ((context.parsed * 100) / total).toFixed(1);
-          return `${context.label}: ${context.parsed} productos (${percentage}%)`;
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: 'white',
+        bodyColor: 'white',
+        borderColor: 'rgba(255, 255, 255, 0.3)',
+        borderWidth: 1,
+        cornerRadius: 12,
+        padding: 12,
+        titleFont: {
+          size: 14,
+          weight: 'bold'
+        },
+        bodyFont: {
+          size: 13
+        },
+        callbacks: {
+          label: (context: any) => {
+            const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+            const percentage = ((context.parsed * 100) / total).toFixed(1);
+            return `${context.label}: ${context.parsed} productos (${percentage}%)`;
+          }
         }
       }
+    },
+    cutout: '60%',
+    animation: {
+      animateRotate: true,
+      animateScale: true,
+      duration: 2000,
+      easing: 'easeInOutQuart'
+    },
+    interaction: {
+      intersect: false,
+      mode: 'index'
+    },
+    elements: {
+      arc: {
+        borderWidth: 3,
+        hoverBorderWidth: 4,
+        hoverOffset: 10
+      }
     }
-  },
-  cutout: '60%',
-  animation: {
-    animateRotate: true,
-    animateScale: true,
-    duration: 2000,
-    easing: 'easeInOutQuart'
-  },
-  interaction: {
-    intersect: false,
-    mode: 'index'
-  },
-  elements: {
-    arc: {
-      borderWidth: 3,
-      hoverBorderWidth: 4,
-      hoverOffset: 10
-    }
-  }
-};
+  };
 
-// Genera los datos para el gráfico de productos por categoría
-generateChart(): void {
-  if (!this.products.length) {
+  // Genera los datos para el gráfico de productos por categoría
+  generateChart(): void {
+    if (!this.products.length) {
+      this.doughnutChartData = {
+        labels: ['Sin datos'],
+        datasets: [{
+          data: [1],
+          backgroundColor: ['rgba(224, 224, 224, 0.8)'],
+          borderColor: ['rgba(224, 224, 224, 1)'],
+          borderWidth: 2
+        }]
+      };
+      return;
+    }
+
+    const counts: Record<string, number> = {};
+
+    for (const p of this.products) {
+      const catName = this.getCategoryName(p.category);
+      counts[catName] = (counts[catName] || 0) + 1;
+    }
+
+    const labels = Object.keys(counts);
+    const data = Object.values(counts);
+
+    // Asegurar que tenemos suficientes colores
+    const backgroundColors = labels.map((_, index) =>
+      this.chartColors[index % this.chartColors.length]
+    );
+
+    const borderColors = labels.map((_, index) =>
+      this.chartBorderColors[index % this.chartBorderColors.length]
+    );
+
     this.doughnutChartData = {
-      labels: ['Sin datos'],
+      labels,
       datasets: [{
-        data: [1],
-        backgroundColor: ['rgba(224, 224, 224, 0.8)'],
-        borderColor: ['rgba(224, 224, 224, 1)'],
-        borderWidth: 2
+        data,
+        backgroundColor: backgroundColors,
+        borderColor: borderColors,
+        borderWidth: 3,
+        hoverBorderWidth: 4,
+        hoverOffset: 10
       }]
     };
-    return;
   }
-
-  const counts: Record<string, number> = {};
-
-  for (const p of this.products) {
-    const catName = this.getCategoryName(p.category);
-    counts[catName] = (counts[catName] || 0) + 1;
-  }
-
-  const labels = Object.keys(counts);
-  const data = Object.values(counts);
-
-  // Asegurar que tenemos suficientes colores
-  const backgroundColors = labels.map((_, index) => 
-    this.chartColors[index % this.chartColors.length]
-  );
-  
-  const borderColors = labels.map((_, index) => 
-    this.chartBorderColors[index % this.chartBorderColors.length]
-  );
-
-  this.doughnutChartData = {
-    labels,
-    datasets: [{
-      data,
-      backgroundColor: backgroundColors,
-      borderColor: borderColors,
-      borderWidth: 3,
-      hoverBorderWidth: 4,
-      hoverOffset: 10
-    }]
-  };
-}
 
   // Calcula el promedio de precios de los productos
   get averagePrice(): number {

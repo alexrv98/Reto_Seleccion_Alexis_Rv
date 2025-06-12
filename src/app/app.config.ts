@@ -9,7 +9,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-     provideAnimations(), // Necesario para Toastr
+    provideAnimations(),
     provideToastr()
   ]
 };
