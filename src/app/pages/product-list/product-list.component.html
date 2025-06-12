@@ -32,10 +32,20 @@
             </button>
 
             <!-- Contador de productos -->
-            <div class="badge bg-secondary text-white rounded-pill px-3 py-2 small d-flex align-items-center">
+            <div class="badge bg-secondary text-white rounded-pill px-3 py-2 d-flex align-items-center"
+              style="font-size: 0.875rem; font-weight: normal;">
               <i class="fas fa-cubes me-1"></i>
               {{ filteredProducts.length }} productos
             </div>
+
+            <!-- Promedio de precios -->
+            <div class="badge bg-secondary text-white rounded-pill px-3 py-2 d-flex align-items-center"
+              style="font-size: 0.875rem; font-weight: normal;">
+              <i class="fas fa-dollar-sign me-1"></i>
+              Precio promedio: ${{ averagePrice | number:'1.2-2' }}
+            </div>
+
+
           </div>
 
           <!-- Panel de filtros colapsable -->
@@ -145,7 +155,6 @@
     <div class="text-center py-5">
       <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
       <h4 class="text-muted">No hay productos disponibles</h4>
-      <p class="text-muted">Agrega tu primer producto para comenzar</p>
       <button class="btn btn-primary" (click)="onAddProduct()">
         <i class="fas fa-plus me-2"></i>Agregar Producto
       </button>

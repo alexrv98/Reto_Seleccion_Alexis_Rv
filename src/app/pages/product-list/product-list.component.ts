@@ -85,10 +85,9 @@ export class ProductListComponent implements OnInit {
 
   //Selección de categoría
   onCategorySelected(category: string) {
-  this.selectedCategory = category;
-  this.applyAllFilters();
-}
-
+    this.selectedCategory = category;
+    this.applyAllFilters();
+  }
 
 
   //Eliminación de producto
@@ -119,16 +118,15 @@ export class ProductListComponent implements OnInit {
 
   //Guardar
   onFormSaved() {
-  this.showFormModal = false;
-  this.productService.getAll().subscribe({
-    next: (data) => {
-      this.products = data;
-      this.applyAllFilters(); // <--- esta es la clave
-    },
-    error: (error) => this.handleError('productos', error)
-  });
-}
-
+    this.showFormModal = false;
+    this.productService.getAll().subscribe({
+      next: (data) => {
+        this.products = data;
+        this.applyAllFilters(); // <--- esta es la clave
+      },
+      error: (error) => this.handleError('productos', error)
+    });
+  }
 
   // Manejo de errores
   private handleError(context: string, error: any, alertUser: boolean = false) {
@@ -138,66 +136,73 @@ export class ProductListComponent implements OnInit {
 
   // Método para filtrar productos por rango de precios
   onPriceRangeSelected(range: { min: number, max: number }) {
-  this.priceRange = range;
-  this.applyAllFilters();
-}
-
+    this.priceRange = range;
+    this.applyAllFilters();
+  }
 
   // Método para filtrar productos por búsqueda contra Baas
   onSearch(term: string) {
-  this.searchTerm = term;
-  this.applyAllFilters();
-}
-
-applyAllFilters() {
-  if (this.searchTerm) {
-    // Búsqueda contra el backend
-    this.productService.searchByName(this.searchTerm).subscribe({
-      next: (data) => {
-        let filtered = [...data];
-
-        // Filtro por categoría
-        if (this.selectedCategory) {
-          filtered = filtered.filter(p => p.category === this.selectedCategory);
-        }
-
-        // Filtro por precio
-        if (this.priceRange) {
-          const { min, max } = this.priceRange;
-          filtered = filtered.filter(p => {
-            const price = p.price ?? 0;
-            return (!min || price >= min) && (!max || price <= max);
-          });
-        }
-
-        this.filteredProducts = filtered;
-        this.currentPage = 1;
-      },
-      error: (err) => {
-        console.error('Error en búsqueda por nombre:', err);
-        this.filteredProducts = [];
-      }
-    });
-  } else {
-    // Búsqueda local si no hay término
-    let filtered = [...this.products];
-
-    if (this.selectedCategory) {
-      filtered = filtered.filter(p => p.category === this.selectedCategory);
-    }
-
-    if (this.priceRange) {
-      const { min, max } = this.priceRange;
-      filtered = filtered.filter(p => {
-        const price = p.price ?? 0;
-        return (!min || price >= min) && (!max || price <= max);
-      });
-    }
-
-    this.filteredProducts = filtered;
-    this.currentPage = 1;
+    this.searchTerm = term;
+    this.applyAllFilters();
   }
-}
+
+  // Método para sacar el promedio de precios de los productos
+  get averagePrice(): number {
+    if (!this.filteredProducts.length) return 0;
+    const total = this.filteredProducts.reduce((sum, product) => sum + product.price, 0);
+    return total / this.filteredProducts.length;
+  }
+
+
+  applyAllFilters() {
+    if (this.searchTerm) {
+      // Búsqueda contra el backend
+      this.productService.searchByName(this.searchTerm).subscribe({
+        next: (data) => {
+          let filtered = [...data];
+
+          // Filtro por categoría
+          if (this.selectedCategory) {
+            filtered = filtered.filter(p => p.category === this.selectedCategory);
+          }
+
+          // Filtro por precio
+          if (this.priceRange) {
+            const { min, max } = this.priceRange;
+            filtered = filtered.filter(p => {
+              const price = p.price ?? 0;
+              return (!min || price >= min) && (!max || price <= max);
+            });
+          }
+
+          this.filteredProducts = filtered;
+          this.currentPage = 1;
+        },
+        error: (err) => {
+          console.error('Error en búsqueda por nombre:', err);
+          this.filteredProducts = [];
+        }
+      });
+    } else {
+      // Búsqueda local si no hay término
+      let filtered = [...this.products];
+
+      if (this.selectedCategory) {
+        filtered = filtered.filter(p => p.category === this.selectedCategory);
+      }
+
+      if (this.priceRange) {
+        const { min, max } = this.priceRange;
+        filtered = filtered.filter(p => {
+          const price = p.price ?? 0;
+          return (!min || price >= min) && (!max || price <= max);
+        });
+      }
+
+      this.filteredProducts = filtered;
+      this.currentPage = 1;
+    }
+  }
 
 
 
@@ -227,7 +232,7 @@ applyAllFilters() {
   }
 
   get pageNumbers(): number[] {
-    const pagesToShow = 4; // puedes ajustar este valor
+    const pagesToShow = 4;
     const total = this.totalPages;
 
     let start = Math.max(this.currentPage - Math.floor(pagesToShow / 2), 1);
