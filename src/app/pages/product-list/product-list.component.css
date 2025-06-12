@@ -42,3 +42,11 @@ button.btn-primary:hover {
   border-color: #34D399;
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
 }
+
+#toast-container {
+  position: fixed !important;
+  z-index: 1060 !important; /* mayor que .modal (1050) */
+  top: 1rem;
+  right: 1rem;
+  pointer-events: none;
+}

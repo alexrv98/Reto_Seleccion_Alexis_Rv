@@ -27,11 +27,12 @@
 
             <!-- Botón de filtros -->
             <button class="btn btn-outline-primary btn-sm rounded-pill px-3 d-flex align-items-center"
-              (click)="showFilters = !showFilters" [class.active]="showFilters">
-              <i class="fas fa-filter me-1 small"></i>
-              <span class="d-none d-sm-inline">Filtros</span>
-              <i class="fas ms-1" [class.fa-chevron-down]="!showFilters" [class.fa-chevron-up]="showFilters"></i>
-            </button>
+                            (click)="showFilters = !showFilters" [class.active]="showFilters">
+                            <i class="fas fa-filter me-1 small"></i>
+                            <span class="d-none d-sm-inline">Filtros</span>
+                            <i class="fas ms-1" [class.fa-chevron-down]="!showFilters"
+                                [class.fa-chevron-up]="showFilters"></i>
+                        </button>
 
             <!-- Contador de productos -->
             <div class="badge bg-secondary text-white rounded-pill px-3 py-2 d-flex align-items-center"

@@ -30,11 +30,9 @@
 </main>
 
 <!-- Modal de Error (fuera del main) -->
-<div class="modal fade show" tabindex="-1"
-  [style.display]="showModal ? 'block' : 'none'"
-  [class.show]="showModal"
+<div class="modal fade show" tabindex="-1" [style.display]="showModal ? 'block' : 'none'" [class.show]="showModal"
   style="background-color: rgba(0, 0, 0, 0.5); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1050;">
-  
+
   <div class="modal-dialog mt-4"> <!-- Quitar 'modal-dialog-centered', agregar 'mt-4' -->
     <div class="modal-content">
       <div class="modal-header bg-danger text-white">

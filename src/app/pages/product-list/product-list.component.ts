@@ -13,6 +13,8 @@ import { ProductFiltersPriceComponent } from '../../components/product-filters/p
 import { ProductFiltersSearchComponent } from '../../components/product-filters/product-filters-search/product-filters-search.component';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   standalone: true,
@@ -30,12 +32,10 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
     ProductFiltersSearchComponent,
     NavbarComponent
   ],
-
-
-
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
+
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
@@ -57,7 +57,9 @@ export class ProductListComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
-      private router: Router
+    private router: Router,
+    private toastr: ToastrService
+
 
   ) { }
 
@@ -99,18 +101,6 @@ export class ProductListComponent implements OnInit {
     this.applyAllFilters();
   }
 
-
-  //Eliminación de producto
-  async deleteProduct(id: string) {
-    if (!confirm('¿Estás seguro de eliminar este producto?')) return;
-    try {
-      await this.productService.delete(id);
-      this.loadProducts();
-    } catch (error) {
-      this.handleError('eliminar producto', error, true);
-    }
-  }
-
   //Agregar y editar producto
   onAddProduct() {
     this.selectedProduct = null;
@@ -121,6 +111,19 @@ export class ProductListComponent implements OnInit {
     this.showFormModal = true;
   }
 
+  //Eliminación de producto
+  async deleteProduct(id: string) {
+  if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
+  try {
+    await this.productService.delete(id);
+    this.toastr.success('Producto eliminado exitosamente.', 'Eliminado');
+    this.loadProducts();
+  } catch (error) {
+    this.handleError('eliminar producto', error, true);
+    this.toastr.error('Ocurrió un error al eliminar el producto.', 'Error');
+  }
+}
+
   //Cerrar formulario
   onFormClosed() {
     this.showFormModal = false;
@@ -128,15 +131,24 @@ export class ProductListComponent implements OnInit {
 
   //Guardar
   onFormSaved() {
-    this.showFormModal = false;
-    this.productService.getAll().subscribe({
-      next: (data) => {
-        this.products = data;
-        this.applyAllFilters(); // <--- esta es la clave
-      },
-      error: (error) => this.handleError('productos', error)
-    });
+  const esEdicion = !!this.selectedProduct;
+  this.showFormModal = false;
+
+  if (esEdicion) {
+    this.toastr.success('Producto actualizado con éxito', 'Actualizado');
+  } else {
+    this.toastr.success('Producto agregado con éxito', 'Agregado');
   }
+
+  this.productService.getAll().subscribe({
+    next: (data) => {
+      this.products = data;
+      this.applyAllFilters();
+    },
+    error: (error) => this.handleError('productos', error)
+  });
+}
+
 
   // Manejo de errores
   private handleError(context: string, error: any, alertUser: boolean = false) {
