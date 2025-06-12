@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from './environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 
 bootstrapApplication(App, {
@@ -13,6 +14,8 @@ bootstrapApplication(App, {
     provideRouter(routes),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
+        provideCharts(withDefaultRegisterables())
+
   ]
 });

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../models/product.model';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ProductFiltersComponent } from '../../components/product-filters/product-filters-category/product-filters.component';
 import { ProductCardsComponent } from '../../components/product-cards/product-cards.component';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
@@ -54,13 +54,21 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+      private router: Router
+
   ) { }
 
   ngOnInit() {
     this.loadProducts();
     this.loadCategories();
   }
+
+
+  goToStatistics() {
+  this.router.navigate(['/estadisticas']);
+}
+
 
   //Carga de productos
   loadProducts() {
@@ -204,9 +212,7 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-
-
-
+  // Devuelve la lista de productos filtrados, ordenados y paginados
   get paginatedAndSortedProducts(): Product[] {
     const sorted = [...this.filteredProducts].sort((a, b) => {
       const fieldA = a[this.sortField];
@@ -227,10 +233,12 @@ export class ProductListComponent implements OnInit {
     return sorted.slice(start, start + this.itemsPerPage);
   }
 
+  // Devuelve el número total de páginas según los productos filtrados
   get totalPages(): number {
     return Math.ceil(this.filteredProducts.length / this.itemsPerPage);
   }
 
+  // Devuelve un array con los números de página a mostrar en la paginación
   get pageNumbers(): number[] {
     const pagesToShow = 4;
     const total = this.totalPages;
