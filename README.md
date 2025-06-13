@@ -138,7 +138,7 @@ Cada documento representa un producto y contiene los siguientes campos:
 Se implementó una colección adicional denominada `categories` para almacenar una lista estática de categorías. Estas fueron cargadas previamente de forma manual y no se modifican desde la interfaz de usuario. El propósito de esta colección es facilitar la obtención de categorías desde Firestore y evitar su codificación directa en el frontend.
 
 <p align="center">
-  <img src="./assets/firebase-products-collection.png" width="700"/>
+  <img src="https://github.com/alexrv98/Reto_Seleccion_Alexis_Rv/blob/main/public/assets/firebase-products-collection.png" width="1000"/>
   <br>
   <i>Vista de la colección "products" en Firestore</i>
 </p>
