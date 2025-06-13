@@ -16,6 +16,12 @@
 
 La aplicación permite gestionar un catálogo de productos mediante operaciones CRUD (crear, leer, actualizar y eliminar), aplicar filtros dinámicos por categoría y rango de precio, ordenar los productos por nombre o precio, y visualizar estadísticas en tiempo real a través de gráficas.
 
+## 🔥 Enlace a la Aplicación en Producción 
+
+La aplicación está desplegada y disponible públicamente en Firebase Hosting:
+
+🔗 **[https://sistema-productos-87041.web.app](https://sistema-productos-87041.web.app)**
+
 ## 🛠️ Stack Tecnológico
 
 * **Framework Frontend:** Angular v20 (standalone components, RxJS, TypeScript)
